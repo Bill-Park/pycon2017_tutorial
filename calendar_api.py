@@ -1,4 +1,4 @@
-import time
+import datetime
 from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
@@ -27,11 +27,31 @@ calendarlist = DRIVE.calendarList().list(
 )
 print(calendarlist)
 '''
-
+# get calendar list
 eventsResult = DRIVE.events().list(
         calendarId='primary', maxResults=10, singleEvents=True,
         orderBy='startTime').execute()
 #print(eventsResult['items'])
+print(datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S'))
+
+# add event
+insertResult = DRIVE.events().insert(
+    calendarId='primary', body={
+        'summary': 'pycon day',
+        'start': {
+            'dateTime': datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
+            'timeZone': 'Asia/Seoul'
+        },
+        'end': {
+            'dateTime': (datetime.datetime.now() + datetime.timedelta(hours=5)).strftime('%Y-%m-%dT%H:%M:%S'),
+            'timeZone': 'Asia/Seoul'
+        }
+    }
+).execute()
+
+print(insertResult)
+'''
 for item in eventsResult['items'] :
     print(item['summary'])
     print(item['start'])
+'''
