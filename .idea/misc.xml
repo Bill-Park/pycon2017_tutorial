@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< HEAD
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.5.2 virtualenv at F:\python\pycon" project-jdk-type="Python SDK" />
+=======
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.5.2 virtualenv at F:\python\virtualenv4pycon" project-jdk-type="Python SDK" />
+>>>>>>> c46d943d16922eb0743a99c8bc3d4f5b4c5de8db
   <component name="masterDetails">
     <states>
       <state key="ScopeChooserConfigurable.UI">
