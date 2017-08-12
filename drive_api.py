@@ -44,20 +44,32 @@ for file_title in file_name.FILES :
 '''
 
 
-'''
-# single file upload
-metadata = {'name': "bill.txt",
-            'mimeType': None
-            }
 
+# single file upload
+filename = "beer.jpeg"
+shared_folder = "0B_CtpwiAk5hIZDJhMGlneURHTUE"
+
+metadata = {'name': filename,
+            'mimeType': None,
+            'parents': [shared_folder] #
+            }
+'''
 #media_body is necessary
 res = DRIVE.files().create(body=metadata, media_body="bill.txt").execute()
-# if res:
-# print('Uploaded "%s" (%s)' % (file_name, res['mimeType']))
+print(res)
+if res:
+    print('Uploaded "%s" (%s)' % (res['name'], res['mimeType']))
 '''
+#https://drive.google.com/drive/folders/0B_CtpwiAk5hIZDJhMGlneURHTUE?usp=sharing
+res = DRIVE.files().create(body=metadata, media_body=filename, fields='id, name, webViewLink').execute()
+#print(res)
+if res:
+    print(res)
+    #print('Uploaded "%s" (%s)' % (res['name'], res['mimeType']))
 
 
 
+exit()
 # ...
 
 def print_file_metadata(service, file_id):

@@ -17,3 +17,7 @@ def get_weather_map_coordinate(f1="", f2="", f3=""):
     #print(response['y'])
 
     return response
+
+
+if __name__ == "__main__" :
+    print(get_weather_map_coordinate("서울특별시", "강남구"))

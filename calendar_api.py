@@ -21,13 +21,7 @@ if not creds or creds.invalid:
             if flags else tools.run(flow, store)
 
 DRIVE = build('calendar', 'v3', http=creds.authorize(Http()))
-'''
-calendarlist = DRIVE.calendarList().list(
-    calendarId='primary', maxResults=10, singleEvents=True,
-        orderBy='startTime'
-)
-print(calendarlist)
-'''
+
 
 # get calendar list
 eventsResult = DRIVE.events().list(
@@ -39,8 +33,8 @@ for item in eventsResult['items'] :
     print(item['summary'])
     print(item['start'])
 
+exit()
 
-print(datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S'))
 
 # add event
 insertResult = DRIVE.events().insert(
