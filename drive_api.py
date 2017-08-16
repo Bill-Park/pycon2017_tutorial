@@ -7,14 +7,14 @@ import io
 
 # api가 전부 접근할 수는 없음 google drive로 작성됨이 있어야함
 
-try :
+try:
     import argparse
     flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
 except ImportError:
     flags = None
 
 SCOPES = 'https://www.googleapis.com/auth/drive.file'
-store = file.Storage('drive_api.json')
+store = file.Storage('drive_storage.json')
 creds = store.get()
 
 if not creds or creds.invalid:
@@ -25,117 +25,7 @@ if not creds or creds.invalid:
 
 DRIVE = build('drive', 'v3', http=creds.authorize(Http()))
 
-
-'''
-# mutliple file upload
-for file_title in file_name.FILES :
-    start_time = time.time()
-    file_name = file_title
-    metadata = {'name': file_name,
-                'mimeType': None
-                }
-
-    res = DRIVE.files().create(body=metadata, media_body=file_name).execute()
-    #if res:
-        #print('Uploaded "%s" (%s)' % (file_name, res['mimeType']))
-    running_time = time.time() - start_time
-    return_time.append(round(running_time, 2))
-    print("--- %s seconds ---" % (running_time))
-'''
-
-
-
-# single file upload
-filename = "beer.jpeg"
-shared_folder = "0B_CtpwiAk5hIZDJhMGlneURHTUE"
-
-metadata = {'name': filename,
-            'mimeType': None,
-            'parents': [shared_folder] #
-            }
-'''
-#media_body is necessary
-res = DRIVE.files().create(body=metadata, media_body="bill.txt").execute()
-print(res)
-if res:
-    print('Uploaded "%s" (%s)' % (res['name'], res['mimeType']))
-'''
-#https://drive.google.com/drive/folders/0B_CtpwiAk5hIZDJhMGlneURHTUE?usp=sharing
-res = DRIVE.files().create(body=metadata, media_body=filename, fields='id, name, webViewLink').execute()
-#print(res)
-if res:
-    print(res)
-    #print('Uploaded "%s" (%s)' % (res['name'], res['mimeType']))
-
-
-
-exit()
-# ...
-
-def print_file_metadata(service, file_id):
-  """Print a file's metadata.
-
-  Args:
-    service: Drive API service instance.
-    file_id: ID of the file to print metadata for.
-  """
-  try :
-    file = service.files().get(fileId=file_id).execute()
-    print('Title: %s' % file['name'])
-    print('MIME type: %s' % file['mimeType'])
-  except :
-      print("error")
-
-
-  #except(errors.HttpError, error):
-  #  print('An error occurred: %s' % error)
-
-
-
-def print_file_content(service, file_id):
-  """Print a file's content.
-
-  Args:
-    service: Drive API service instance.
-    file_id: ID of the file.
-
-  Returns:
-    File's content if successful, None otherwise.
-  """
-  try:
-    print(service.files().get_media(fileId=file_id).execute())
-  except:
-    print("error")
-  #except errors.HttpError, error:
-  #  print('An error occurred: %s' % error)
-
-
-def download_file(service, file_id, local_fd):
-  """Download a Drive file's content to the local filesystem.
-
-  Args:
-    service: Drive API Service instance.
-    file_id: ID of the Drive file that will downloaded.
-    local_fd: io.Base or file object, the stream that the Drive file's
-        contents will be written to.
-  """
-  request = service.files().get_media(fileId=file_id)
-  media_request = http.MediaIoBaseDownload(local_fd, request)
-
-  while True:
-    try:
-      download_progress, done = media_request.next_chunk()
-    #except errors.HttpError, error:
-    #  print 'An error occurred: %s' % error
-    except :
-      return
-    if download_progress:
-      print('Download Progress: %d%%' % int(download_progress.progress() * 100))
-    if done:
-      print('Download Complete')
-      return
-
-
+# find file_id by file_name
 def get_file_id(file_title) :
     query = "name contains '{}'".format(file_title)
 
@@ -146,23 +36,54 @@ def get_file_id(file_title) :
         print(exist_folder)
         # Process change
         if exist_folder.get('name') == file_title :
-            print('Found folder: %s (%s)' % (exist_folder.get('name'), exist_folder.get('id')))
+            print('Found : %s (%s)' % (exist_folder.get('name'), exist_folder.get('id')))
             return exist_folder.get('id')
 
-    print("nothing to find")
+    print("fail to find")
+    return None
 
 
-#print(get_file_id("bill.txt"))
+# single file upload
+def upload_file(file_title, folder_id=None):
 
-#print_file_metadata(DRIVE, get_file_id("bill.txt"))
+    metadata = {'name': file_title,
+                'mimeType': None,
+                }
 
-#print_file_content(DRIVE, get_file_id("bill.txt"))
+    if folder_id is not None :
+        metadata['parents'] = [folder_id]
+
+    res = DRIVE.files().create(body=metadata, media_body=file_title, fields='id, name, webViewLink').execute()
+    if res:
+        print('Uploaded "%s" (%s)' % (res['name'], res['webViewLink']))
 
 
-f = open("bill.txt", "wb")
+def download_file(file_title, local_fd=None):
 
-download_file(DRIVE, get_file_id("bill.txt"), f)
+    file_id = get_file_id(file_title)
 
-f.close()
+    request = DRIVE.files().get_media(fileId=file_id)
+    if local_fd is None:
+        local_fd = file_title
+    file_to_save = open(local_fd, "wb")
+    media_request = http.MediaIoBaseDownload(file_to_save, request)
 
-#print(DRIVE.files().get(fileId=get_file_id("bill.txt")).execute())
+    while True:
+        try:
+            download_progress, done = media_request.next_chunk()
+        except Exception as e:
+            print(e)
+            file_to_save.close()
+            return
+        if download_progress:
+            print('Download Progress: %d%%' % int(download_progress.progress() * 100))
+        if done:
+            print('Download Complete')
+            file_to_save.close()
+            return
+
+
+if __name__ == "__main__" :
+    #upload_file("test.jpg", "0B_CtpwiAk5hIZDJhMGlneURHTUE")
+    #upload_file("test.jpg")
+    download_file("test.jpg")

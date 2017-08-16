@@ -13,7 +13,7 @@ except ImportError:
     flags = None
 
 SCOPES = 'https://www.googleapis.com/auth/calendar'
-store = file.Storage('storage.json')
+store = file.Storage('calendar_storage.json')
 creds = store.get()
 
 if not creds or creds.invalid:
