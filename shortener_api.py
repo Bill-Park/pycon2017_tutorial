@@ -1,11 +1,18 @@
-import bill
+import get_key
 import requests
 import json
 
-post_url = 'https://www.googleapis.com/urlshortener/v1/url'
-key = {"key": bill.get_shorten_key()}
-metadata = {"longUrl": "https://drive.google.com/a/snue-p.com/file/d/0B_CtpwiAk5hIcC01RFN0LWp6Sk0/view?usp=drivesdk"}
 
-response = requests.post(post_url, params=key, data=json.dumps(metadata), headers={'Content-Type': 'application/json'})
-print(response.url)
-print(response.json())
+def get_shorten_url(long_url):
+
+    post_url = 'https://www.googleapis.com/urlshortener/v1/url'
+    key = {"key": get_key.get_shorten_key()}
+    metadata = {"longUrl": long_url}
+
+    response = requests.post(post_url, params=key, data=json.dumps(metadata), headers={'Content-Type': 'application/json'})
+
+    return response.json()['id']
+
+
+if __name__ == "__main__":
+    print(get_shorten_url("youtube.com"))
