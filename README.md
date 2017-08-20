@@ -48,4 +48,4 @@ This is a normal paragraph:
 }
 end code block.
 
-![key_data.json](goo.gl/14sBGB)
+![key_data.json](/key_data.png)
