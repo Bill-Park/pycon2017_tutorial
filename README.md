@@ -31,21 +31,14 @@ PYCON2017 api tutorial 관련 자료
 json 형태로 키값을 저장
 파일명 : **key_data.json**
 
-This is a normal paragraph:
+	{
+		"map_key": "kakao map's key",
+		"telegram_token": "telegram bot token",
+		"shorten_key": "google shortener api key",
+		"weather_key": "weather api key",
+		"dust_key": "dust api key"
+	}
 
-{
-
-	"map_key": "kakao map's key",
-	
-	"telegram_token": "telegram bot token",
-	
-	"shorten_key": "google shortener api key",
-	
-	"weather_key": "weather api key",
-	
-	"dust_key": "dust api key"
-	
-}
-end code block.
+### 예시
 
 ![key_data.json](/key_data.png)
