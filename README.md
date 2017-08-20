@@ -32,13 +32,20 @@ json 형태로 키값을 저장
 파일명 : **key_data.json**
 
 This is a normal paragraph:
+
 {
+
 	"map_key": "kakao map's key",
+	
 	"telegram_token": "telegram bot token",
+	
 	"shorten_key": "google shortener api key",
+	
 	"weather_key": "weather api key",
+	
 	"dust_key": "dust api key"
+	
 }
 end code block.
 
-![key_data.json](goo.gl/K91jBr)
+![key_data.json](goo.gl/14sBGB)
