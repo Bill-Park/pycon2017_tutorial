@@ -1,7 +1,6 @@
 import time
 import datetime
 import pytz
-import re
 from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools

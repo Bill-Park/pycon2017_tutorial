@@ -50,7 +50,8 @@ def get_weather_api(nx, ny):
     # SKY = 하늘 상태
     # T3H = 기온
     # REH = 습도
-    weather_i_want = ['SKY', 'T3H', 'REH']
+    # POP = 강수확률
+    weather_i_want = ['SKY', 'T3H', 'REH', 'POP']
     for weathercast in response:
         if weathercast['fcstDate'] == target_date and weathercast['fcstTime'] == target_time:
             if weathercast['category'] in weather_i_want:
