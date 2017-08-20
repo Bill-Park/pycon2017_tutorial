@@ -6,7 +6,7 @@ _telegram_token = None
 _weather_key = None
 _dust_key = None
 
-with open("key_data.json", "r") as key_all :
+with open("key_data.json", "r") as key_all:
     data = json.load(key_all)
     _map_key = data['map_key']
     _shortener_key = data['shorten_key']

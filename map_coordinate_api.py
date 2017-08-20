@@ -1,7 +1,7 @@
 import requests
 import get_key
 
-
+# custom api, bill's aws lambda
 def get_weather_map_coordinate(f1="", f2="", f3=""):
     base_url = "https://57b1zt4gf3.execute-api.ap-northeast-2.amazonaws.com/dev"
     print(f1)
@@ -19,6 +19,7 @@ def get_weather_map_coordinate(f1="", f2="", f3=""):
     return response
 
 
+# kakao map api
 def get_map_address(longitude, latitude):
     base_url = 'https://dapi.kakao.com/v2/local/geo/coord2regioncode.json'
 
