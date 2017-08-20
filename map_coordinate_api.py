@@ -37,5 +37,8 @@ def get_map_address(longitude, latitude):
 
 
 if __name__ == "__main__":
-    print(get_weather_map_coordinate("서울특별시", "강남구"))
-    print(get_map_address(129.03, 35.15))   # 부산광역시 부산진구 가야2동
+    #print(get_weather_map_coordinate("서울특별시", "강남구"))
+    #print(get_map_address(129.03, 35.15))   # 부산광역시 부산진구 가야2동
+
+    address_1, address_2, address_3 = get_map_address(129.03, 35.15)
+    print(get_weather_map_coordinate(address_1, address_2, address_3))
